@@ -1,6 +1,7 @@
 package com.sidnei.crudapp.view.searchPerson;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
     private Button btnEdit;
     private Spinner spnFilterColumn;
     private EditText etFilter;
+    private ProgressDialog progressDialog;
 
     public PersonSearchFragment() {
     }
@@ -72,10 +74,16 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
         spnFilterColumn = view.findViewById(R.id.spnFilterColumn);
         etFilter = view.findViewById(R.id.etFilter);
 
-        presenter = new PersonSearchPresenter(this, view.getContext());
+        if(savedInstanceState == null){
+            presenter = new PersonSearchPresenter(this, view.getContext());
+        }else{
+            presenter.setView(this);
+        }
 
+        /// atualizando o recyclerView com o adapter que existia anteriormente
         configurePersonAdapterToRecyclerView();
 
+        /// configuring the filters columns adapter
         configureFilterAdapter();
 
         /// configure the onClick button events
@@ -180,18 +188,20 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
     }
 
     /***/
-    public void showProgress(){
-        ///@todo implement
+    public void showProgress(String title, String message){
+        hideProgress();
+        progressDialog = ProgressDialog.show(getActivity(), title, message, true);
     }
     /***/
     public void hideProgress(){
-        /// @todo implement
+        if(progressDialog != null) {
+            progressDialog.hide();
+        }
     }
 
     /***/
     public void showMessage(String msg){
         try{
-//            Snackbar.make(this.getView(), msg, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             Toast.makeText(this.getActivity().getApplicationContext(), msg, Toast.LENGTH_LONG).show();
         }catch (Exception ex){
             Log.d("showSearchFail", "ERROR: " + ex.getMessage());
@@ -227,6 +237,11 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
     /***/
     public void clearView(){
         etFilter.setText("");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     /**

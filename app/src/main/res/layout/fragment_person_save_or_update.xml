@@ -62,7 +62,8 @@
                     android:id="@+id/rgSex"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rbSexMale"
@@ -143,11 +144,11 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btnCancel"
+                    android:id="@+id/btnClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Cancelar" />
+                    android:text="Limpar" />
 
                 <Button
                     android:id="@+id/btnSave"

@@ -4,7 +4,7 @@ import com.sidnei.crudapp.model.Person;
 
 public interface IPersonSaveOrUpdateView {
 
-    void showProgress();
+    void showProgress(String title, String message);
 
     void hideProgress();
 

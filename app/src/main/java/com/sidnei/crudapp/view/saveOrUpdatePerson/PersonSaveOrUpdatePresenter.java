@@ -23,7 +23,7 @@ public class PersonSaveOrUpdatePresenter {
         view = null;
     }
 
-    public void cancel(){
+    public void clear(){
         p = new Person();
 
         if(view != null){
@@ -43,35 +43,43 @@ public class PersonSaveOrUpdatePresenter {
     }
 
     public void save(){
-        /// ***** verifying if the person data is valid *************
 
-        /// person's name cannot be a empty value
-        if(p.getName().equals("")){
+        if(view != null){
+            view.showProgress("Salvando dados...", "Por favor, aguarde um instance!");
+        }
+
+        /// ***** verifying if all person data is valid *************
+        if(!p.getName().equals("") && p.isValidCpf()) {
+
+            /// saving the person into a repository
+            boolean res = repository.save(p);
+            if(res){
+                if(view != null){
+                    view.showSaveSuccessful();
+                }
+            }else{
+                if(view != null){
+                    view.showSaveFail();
+                }
+            }
+
+            /// person's name cannot be a empty value
+        }else if(p.getName().equals("")){
+
             if(view != null){
                 view.setNameError();
             }
-            return;
-        }
 
-        /// verifying if the cpf is a valid one
-        if(!p.isValidCpf()){
+            /// verifying if the cpf is a valid one
+        }else if(!p.isValidCpf()){
             if(view != null){
                 view.setCpfError();
             }
-            return;
         }
         ////*************************************************
 
-        /// saving the person into a repository
-        boolean res = repository.save(p);
-        if(res){
-            if(view != null){
-                view.showSaveSuccessful();
-            }
-        }else{
-            if(view != null){
-                view.showSaveFail();
-            }
+        if(view != null){
+            view.hideProgress();
         }
     }
 
@@ -107,5 +115,9 @@ public class PersonSaveOrUpdatePresenter {
 
     public void setAddress(String address){
         this.p.setAddress(address);
+    }
+
+    public void setView(IPersonSaveOrUpdateView view){
+        this.view = view;
     }
 }

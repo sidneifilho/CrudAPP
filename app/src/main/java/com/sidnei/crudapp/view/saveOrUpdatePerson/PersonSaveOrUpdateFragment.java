@@ -1,5 +1,6 @@
 package com.sidnei.crudapp.view.saveOrUpdatePerson;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,13 +43,14 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     private Spinner spnUF;
     private EditText etAddress;
     private Button btnSave;
-    private Button btnCancel;
+    private Button btnClear;
+    private ProgressDialog progressDialog;
 
     private OnFragmentInteractionListener mListener;
 
     private ArrayAdapter<String> ufAdapter;
 
-    private PersonSaveOrUpdatePresenter personPresenter;
+    private PersonSaveOrUpdatePresenter presenter;
 
     public PersonSaveOrUpdateFragment() {
 
@@ -90,7 +92,7 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         View view = inflater.inflate(R.layout.fragment_person_save_or_update, container, false);
 
         /// fields get
-        btnCancel = view.findViewById(R.id.btnCancel);
+        btnClear = view.findViewById(R.id.btnClear);
         btnSave = view.findViewById(R.id.btnSave);
         etName = view.findViewById(R.id.etName);
         etAddress = view.findViewById(R.id.etAddress);
@@ -108,14 +110,19 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         ufAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spnUF.setAdapter(ufAdapter);
 
-        /// init the presenter with the activity associate to the fragment
-        personPresenter = new PersonSaveOrUpdatePresenter(this, view.getContext());
+        /// verifying if the view is instance for the first time
+        if(savedInstanceState == null){
+            /// init the presenter with the activity associate to the fragment
+            presenter = new PersonSaveOrUpdatePresenter(this, view.getContext());
+        }else{
+            presenter.setView(this);
+        }
 
         /// if exist arguments than we will update the argPerson because we will edit the Person Object
         if (getArguments() != null) {
-            personPresenter.setPerson((Person) getArguments().getSerializable("person"));
+            presenter.setPerson((Person) getArguments().getSerializable("person"));
         }else{
-            personPresenter.setPerson(new Person());
+            presenter.setPerson(new Person());
         }
 
         /// configuring the event of the fields to update the values in the presenter object
@@ -132,7 +139,7 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
             @Override
             public void afterTextChanged(Editable editable) {
-                personPresenter.setName(editable.toString());
+                presenter.setName(editable.toString());
             }
         });
 
@@ -149,7 +156,7 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
             @Override
             public void afterTextChanged(Editable editable) {
-                personPresenter.setAddress(editable.toString());
+                presenter.setAddress(editable.toString());
             }
         });
 
@@ -166,7 +173,7 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
             @Override
             public void afterTextChanged(Editable editable) {
-                personPresenter.setCEP(editable.toString());
+                presenter.setCEP(editable.toString());
             }
         });
 
@@ -183,7 +190,7 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
             @Override
             public void afterTextChanged(Editable editable) {
-                personPresenter.setCPF(editable.toString());
+                presenter.setCPF(editable.toString());
             }
         });
 
@@ -192,14 +199,14 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 View radioButton = rgSex.findViewById(checkedId);
                 int index = rgSex.indexOfChild(radioButton);
-                personPresenter.setSex(index);
+                presenter.setSex(index);
             }
         });
 
         spnUF.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                personPresenter.setUF(spnUF.getSelectedItem().toString());
+                presenter.setUF(spnUF.getSelectedItem().toString());
             }
 
             @Override
@@ -212,15 +219,15 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                personPresenter.save();
+                presenter.save();
             }
         });
 
         ///When we clicked in the cancel button we will finish the current Activy, and we will be back to the main activity
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                personPresenter.cancel();
+                presenter.clear();
             }
         });
 
@@ -246,10 +253,9 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     public void onDetach() {
 
         /// destroying the presenter
-        if(personPresenter != null) {
-            personPresenter.onDestroy();
+        if(presenter != null) {
+            presenter.onDestroy();
         }
-        personPresenter = null;
         mListener = null;
 
         super.onDetach();
@@ -257,14 +263,17 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
     /***/
     @Override
-    public void showProgress(){
-        /// @todo implements
+    public void showProgress(String title, String message){
+        hideProgress();
+        progressDialog = ProgressDialog.show(getActivity(), title, message, true);
     }
 
     /***/
     @Override
     public void hideProgress(){
-        /// @todo implements
+        if(progressDialog != null) {
+            progressDialog.hide();
+        }
     }
 
     /***/

@@ -1,7 +1,7 @@
 package com.sidnei.crudapp.view.searchPerson;
 
 public interface IPersonSearchView {
-    void showProgress();
+    void showProgress(String title, String message);
     void hideProgress();
     void showSearchFail();
 

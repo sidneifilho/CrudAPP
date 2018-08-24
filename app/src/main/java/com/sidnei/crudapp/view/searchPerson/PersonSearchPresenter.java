@@ -43,6 +43,10 @@ public class PersonSearchPresenter {
     /***/
     public void search(String filterColumn, String filterValue){
 
+        if(view != null){
+            view.showProgress("Pesquisando cadastros...", "Por favor, aguarde um instance!");
+        }
+
         ArrayList<Person> searchList = new ArrayList<>();
 
         /// verifying which column was selected and which whereClause we have to put to search the right elements
@@ -83,10 +87,18 @@ public class PersonSearchPresenter {
             /// updating the adapter with the list received from the repository
             personRecyclerAdapter.setListPersons(searchList);
         }
+
+        if(view != null){
+            view.hideProgress();
+        }
     }
 
     /***/
     public void delete(){
+
+        if(view != null){
+            view.showProgress("Removendo cadastro...", "Por favor, aguarde um instance!");
+        }
 
         /// verifying i there is a selected person valid in the adapter list
         Person p = personRecyclerAdapter.getSelectedPerson();
@@ -113,10 +125,18 @@ public class PersonSearchPresenter {
                 view.showDeleteFail();
             }
         }
+
+        if(view != null){
+            view.hideProgress();
+        }
     }
 
     /***/
     public Person getSelectedPerson(){
         return personRecyclerAdapter.getSelectedPerson();
+    }
+
+    public void setView(IPersonSearchView view){
+        this.view = view;
     }
 }

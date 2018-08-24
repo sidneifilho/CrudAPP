@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CrudAPP</string>
+    <string name="search">Pesquisar</string>
+    <string name="new_record">Novo registro</string>
+    <string name="name">Nome</string>
+    <string name="clear">Limpar</string>
+    <string name="save">Salvar</string>
+    <string name="other">Outro</string>
+    <string name="female">Feminino</string>
+    <string name="male">Masculino</string>
+    <string name="sex">Sexo</string>
+    <string name="address">Endereço</string>
+    <string name="filter">Filtro</string>
+    <string name="remove">Remover</string>
+    <string name="edit">Editar</string>
+    <string name="search_results">Resultados da pesquisa</string>
+    <string name="all">Todos</string>
+</resources>

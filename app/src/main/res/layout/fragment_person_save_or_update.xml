@@ -28,7 +28,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:ems="10"
-                    android:hint="Nome"
+                    android:hint="@string/name"
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
@@ -36,12 +36,13 @@
                 android:id="@+id/cpf_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
                     android:id="@+id/etCPF"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="CPF"
+                    android:hint="@string/cpf"
                     android:inputType="number" />
             </android.support.design.widget.TextInputLayout>
 
@@ -56,7 +57,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="Sexo:" />
+                    android:text="@string/sex" />
 
                 <RadioGroup
                     android:id="@+id/rgSex"
@@ -71,21 +72,21 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:enabled="true"
-                        android:text="Masculino" />
+                        android:text="@string/male" />
 
                     <RadioButton
                         android:id="@+id/rbSexFemale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Feminino" />
+                        android:text="@string/female" />
 
                     <RadioButton
                         android:id="@+id/rbSexOther"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Outro" />
+                        android:text="@string/other" />
 
                 </RadioGroup>
 
@@ -107,7 +108,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
-                        android:hint="CEP"
+                        android:hint="@string/cep"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -116,25 +117,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="UF:" />
+                    android:text="@string/uf" />
 
                 <Spinner
                     android:id="@+id/spnUF"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:entries="@array/brazilian_states_names" />
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/address_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <EditText
                     android:id="@+id/etAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Endereço"
+                    android:hint="@string/address"
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
@@ -148,14 +151,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Limpar" />
+                    android:text="@string/clear" />
 
                 <Button
                     android:id="@+id/btnSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Salvar" />
+                    android:text="@string/save" />
             </LinearLayout>
 
         </LinearLayout>

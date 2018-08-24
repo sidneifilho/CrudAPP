@@ -83,9 +83,6 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
         /// atualizando o recyclerView com o adapter que existia anteriormente
         configurePersonAdapterToRecyclerView();
 
-        /// configuring the filters columns adapter
-        configureFilterAdapter();
-
         /// configure the onClick button events
         btnSearch.setOnClickListener(new View.OnClickListener(){
 
@@ -145,20 +142,6 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
             rvListPersons.addItemDecoration(new DividerItemDecoration(this.getActivity().getApplicationContext(), DividerItemDecoration.VERTICAL));
         }catch (Exception ex){
             Log.d("configurePersonAdapterToRecyclerView", "Error: " + ex.getMessage());
-        }
-
-    }
-
-    /***/
-    public void configureFilterAdapter(){
-        try{
-            // attaching data adapter to spinner
-            String columns[] = {"Nome", "CPF", "CEP", "TODOS"};
-            ArrayAdapter<String> flterColumnAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, columns);
-            flterColumnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-            spnFilterColumn.setAdapter(flterColumnAdapter);
-        }catch (Exception ex){
-            Log.d("configureFilterAdapter", "Error: " + ex.getMessage());
         }
 
     }

@@ -10,7 +10,7 @@
         android:id="@+id/btnNewPersonRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Novo cadastro"
+        android:text="@string/new_record"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
@@ -18,7 +18,7 @@
         android:id="@+id/btnSearchPerson"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pesquisar"
+        android:text="@string/search"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="40dp" />
 

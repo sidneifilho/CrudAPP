@@ -21,7 +21,8 @@
                 android:id="@+id/spnFilterColumn"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:entries="@array/person_filter_columns" />
 
         </LinearLayout>
 
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Filtro"
+                android:hint="@string/filter"
                 android:inputType="textPersonName" />
 
             <Button
@@ -44,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Pesquisar" />
+                android:text="@string/search" />
         </LinearLayout>
 
         <View
@@ -68,21 +69,21 @@
                     android:layout_width="37dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Limpar " />
+                    android:text="@string/clear" />
 
                 <Button
                     android:id="@+id/btnDelete"
                     android:layout_width="104dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Remover" />
+                    android:text="@string/remove" />
 
                 <Button
                     android:id="@+id/btnEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Editar" />
+                    android:text="@string/edit" />
 
             </LinearLayout>
 
@@ -97,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Resultado da pesquisa:" />
+                android:text="@string/search_results" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvListPersons"

@@ -2,5 +2,61 @@
     <string name="app_name">CrudAPP</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="new_record">New record</string>
+    <string name="search">Search</string>
+    <string name="name">Name</string>
+    <string name="cpf" translatable="false">CPF</string>
+    <string name="cep" translatable="false">CEP</string>
+    <string name="address">Address</string>
+    <string name="sex">Sex</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="uf" translatable="false">UF</string>
+    <string name="clear">Clear</string>
+    <string name="save">Save</string>
+    <string name="filter">Filter</string>
+    <string name="remove">Remove</string>
+    <string name="edit">Edit</string>
+    <string name="search_results">Search Results</string>
+    <string name="all">All</string>
+
+    <string-array name="person_filter_columns">
+        <item>@string/name</item>
+        <item>@string/cpf</item>
+        <item>@string/cep</item>
+        <item>@string/all</item>
+    </string-array>
+
+    <string-array name="brazilian_states_names">
+        <item>"AC"</item>
+        <item>"AL"</item>
+        <item>"AP"</item>
+        <item>"AM"</item>
+        <item>"BA"</item>
+        <item>"CE"</item>
+        <item>"DF"</item>
+        <item>"ES"</item>
+        <item>"GO"</item>
+        <item>"MA"</item>
+        <item>"MT"</item>
+        <item>"MS"</item>
+        <item>"MG"</item>
+        <item>"PA"</item>
+        <item>"PB"</item>
+        <item>"PR"</item>
+        <item>"PE"</item>
+        <item>"PI"</item>
+        <item>"RJ"</item>
+        <item>"RN"</item>
+        <item>"RS"</item>
+        <item>"RO"</item>
+        <item>"RR"</item>
+        <item>"SC"</item>
+        <item>"SP"</item>
+        <item>"SE"</item>
+        <item>"TO"</item>
+    </string-array>
+
 </resources>

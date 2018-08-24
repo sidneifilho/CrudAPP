@@ -47,9 +47,6 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     private ProgressDialog progressDialog;
 
     private OnFragmentInteractionListener mListener;
-
-    private ArrayAdapter<String> ufAdapter;
-
     private PersonSaveOrUpdatePresenter presenter;
 
     public PersonSaveOrUpdateFragment() {
@@ -103,12 +100,6 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         rbSexMale = view.findViewById(R.id.rbSexMale);
         rbSexOther = view.findViewById(R.id.rbSexOther);
         spnUF = view.findViewById(R.id.spnUF);
-
-        // attaching data adapter to spinner
-        String states[] = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
-        ufAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, states);
-        ufAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spnUF.setAdapter(ufAdapter);
 
         /// verifying if the view is instance for the first time
         if(savedInstanceState == null){
@@ -284,7 +275,12 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
             etCPF.setText(p.getCpf());
             etCEP.setText(p.getCep());
             etAddress.setText(p.getAddress());
-            spnUF.setSelection(ufAdapter.getPosition(p.getUf()));
+
+            for(int i=0;i<spnUF.getCount();i++){
+                if(spnUF.getItemAtPosition(i).toString().equalsIgnoreCase(p.getUf())){
+                    spnUF.setSelection(i);
+                }
+            }
 
             switch (p.getSex()) {
                 case FEMALE:

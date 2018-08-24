@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.sidnei.crudapp.R;
 
-public class PersonHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class PersonRecyclerHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView tvName;
     public TextView tvCPF;
@@ -14,11 +14,14 @@ public class PersonHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     private ItemClickListener itemClickListener;
 
+    /**
+     * Function listener to when tue user click the recyclerview, we will generate a listener to select the holder in the adapter
+     * */
     public void setItemClickListener(ItemClickListener itemClickListener){
         this.itemClickListener = itemClickListener;
     }
 
-    public PersonHolder(View itemView){
+    public PersonRecyclerHolder(View itemView){
         super(itemView);
         tvName = itemView.findViewById(R.id.tvName);
         tvCPF = itemView.findViewById(R.id.tvCPF);

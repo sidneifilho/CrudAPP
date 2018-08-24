@@ -180,13 +180,4 @@ public class Person implements Serializable{
         sex = SEX.OTHER;
     }
 
-    @Override
-    public String toString(){
-        /// @todo implements
-        return "";
-    }
-
-    public void parseFromString(String personStr){
-        /// @todo implements
-    }
 }

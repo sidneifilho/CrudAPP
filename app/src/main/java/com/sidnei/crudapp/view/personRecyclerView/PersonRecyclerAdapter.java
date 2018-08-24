@@ -12,7 +12,7 @@ import com.sidnei.crudapp.model.Person;
 
 import java.util.ArrayList;
 
-public class PersonRecyclerAdapter extends RecyclerView.Adapter<PersonHolder> {
+public class PersonRecyclerAdapter extends RecyclerView.Adapter<PersonRecyclerHolder> {
 
     private ArrayList<Person> listPersons;
     private int selectedRow = -1; ///< default value when there are not rows selected
@@ -23,12 +23,12 @@ public class PersonRecyclerAdapter extends RecyclerView.Adapter<PersonHolder> {
     }
 
     @Override
-    public PersonHolder onCreateViewHolder(ViewGroup parent, int i) {
-        return new PersonHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.person_item_list, parent, false));
+    public PersonRecyclerHolder onCreateViewHolder(ViewGroup parent, int i) {
+        return new PersonRecyclerHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.person_item_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(PersonHolder holder, int position){
+    public void onBindViewHolder(PersonRecyclerHolder holder, int position){
         holder.tvName.setText(listPersons.get(position).getName());
         holder.tvCPF.setText(listPersons.get(position).getCpf());
         holder.tvID.setText(Integer.toString(listPersons.get(position).getId()));
@@ -77,14 +77,12 @@ public class PersonRecyclerAdapter extends RecyclerView.Adapter<PersonHolder> {
         notifyDataSetChanged();
     }
 
-    /***/
     public void addPerson(Person p){
         listPersons.add(p);
         clearSelection();
         notifyDataSetChanged();
     }
-    /*
-    * **/
+
     public void setPerson(int position, Person p){
         listPersons.set(position, p);
         clearSelection();
@@ -100,14 +98,12 @@ public class PersonRecyclerAdapter extends RecyclerView.Adapter<PersonHolder> {
         return null;
     }
 
-    /***/
     public void removePerson(Person p){
         listPersons.remove(p);
         clearSelection();
         notifyDataSetChanged();
     }
 
-    /***/
     public void clearList(){
         listPersons.clear();
         clearSelection();

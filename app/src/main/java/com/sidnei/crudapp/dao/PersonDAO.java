@@ -159,6 +159,7 @@ public class PersonDAO implements IDAO<Person> {
             cursor.close();
         }catch (Exception ex){
             Log.d("PersonDAO selectAll", "Error when trying to select all persons from a database, ERROR: " + ex.getMessage());
+            return null;
         }
 
         return listPerson;
@@ -178,6 +179,7 @@ public class PersonDAO implements IDAO<Person> {
             cursor.close();
         }catch (Exception ex){
             Log.d("PersonDAO selectById", "Error when trying to select by id a person, ERROR: " + ex.getMessage());
+            return null;
         }
 
         return person;
@@ -198,6 +200,7 @@ public class PersonDAO implements IDAO<Person> {
             cursor.close();
         }catch (Exception ex){
             Log.d("PersonDAO selLastRecAdd", "Error when trying to select the last person inserted, ERROR: " + ex.getMessage());
+            return null;
         }
 
         return person;

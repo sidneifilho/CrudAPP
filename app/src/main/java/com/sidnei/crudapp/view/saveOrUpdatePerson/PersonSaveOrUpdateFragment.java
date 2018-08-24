@@ -1,14 +1,15 @@
-package com.sidnei.crudapp.view.fragments;
+package com.sidnei.crudapp.view.saveOrUpdatePerson;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,11 +20,6 @@ import android.widget.Toast;
 
 import com.sidnei.crudapp.R;
 import com.sidnei.crudapp.model.Person;
-import com.sidnei.crudapp.presenters.PersonSaveOrUpdatePresenter;
-import com.sidnei.crudapp.repository.PersonRepository;
-import com.sidnei.crudapp.view.activitys.IPersonSaveOrUpdateView;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,20 +31,11 @@ import java.util.ArrayList;
  */
 public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveOrUpdateView {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_ID = "id";
-    private static final String ARG_NAME = "name";
-    private static final String ARG_CPF = "cpf";
-    private static final String ARG_SEX = "sex";
-    private static final String ARG_CEP = "cep";
-    private static final String ARG_UF = "uf";
-    private static final String ARG_ADDRESS = "address";
-    private Person argPerson;
-
     /// fields
     private EditText etName;
     private EditText etCPF;
     private EditText etCEP;
+    private RadioGroup rgSex;
     private RadioButton rbSexFemale;
     private RadioButton rbSexMale;
     private RadioButton rbSexOther;
@@ -64,47 +51,22 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     private PersonSaveOrUpdatePresenter personPresenter;
 
     public PersonSaveOrUpdateFragment() {
-        argPerson = new Person();
+
     }
 
     /**
      * Use this factory method to create a new instance of this fragment using the provided parameters.
      * This is a way to communicate between the Parent Activity before start
-     * @param id
-     * @param name
-     * @param cpf
-     * @param sex
-     * @param cep
-     * @param uf
-     * @param address
+     * @param p Person object with the values that we want edit
      * @return A new instance of fragment PersonSaveOrUpdateFragment.
      */
-    public static PersonSaveOrUpdateFragment newInstance(int id, String name, String cpf, Person.SEX sex, String cep, String uf, String address) {
+    public static PersonSaveOrUpdateFragment newInstance(Person p) {
         PersonSaveOrUpdateFragment fragment = new PersonSaveOrUpdateFragment();
 
         try{
             /// getting the values from arguments
             Bundle args = new Bundle();
-            args.putInt(ARG_ID, id);
-            args.putString(ARG_NAME, name);
-            args.putString(ARG_CPF, cpf);
-            args.putString(ARG_CEP, cep);
-            args.putString(ARG_UF, uf);
-            args.putString(ARG_ADDRESS, address);
-
-            switch (sex){
-                case FEMALE:
-                    args.putString(ARG_SEX, "f");
-                    break;
-                case MALE:
-                    args.putString(ARG_SEX, "m");
-                    break;
-                case OTHER:
-                    args.putString(ARG_SEX, "o");
-                    break;
-            }
-
-            /// set the args into the fragment
+            args.putSerializable("person", p);
             fragment.setArguments(args);
         }catch (Exception ex){
             Log.d("PersonSaveOrUpdateFragment", "Erro when create a new instance, ERROR: " + ex.getMessage());
@@ -120,19 +82,6 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         // Retain this Fragment so that it will not be destroyed when an orientation
         // change happens and we can keep our AsyncTask running
         setRetainInstance(true);
-
-        /// if exist arguments than we will update the argPerson because we will edit the Person Object
-        if (getArguments() != null) {
-            argPerson.setId(getArguments().getInt(ARG_ID));
-            argPerson.setName(getArguments().getString(ARG_NAME));
-            argPerson.setCpf(getArguments().getString(ARG_CPF));
-            argPerson.setCep(getArguments().getString(ARG_CEP));
-            argPerson.setUf(getArguments().getString(ARG_UF));
-            argPerson.setAddress(getArguments().getString(ARG_ADDRESS));
-            argPerson.setSex(getArguments().getString(ARG_SEX));
-        }else{
-            argPerson.clearValues();
-        }
     }
 
     @Override
@@ -142,11 +91,12 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
         /// fields get
         btnCancel = view.findViewById(R.id.btnCancel);
-        btnSave  = view.findViewById(R.id.btnSave);
+        btnSave = view.findViewById(R.id.btnSave);
         etName = view.findViewById(R.id.etName);
         etAddress = view.findViewById(R.id.etAddress);
         etCEP = view.findViewById(R.id.etCEP);
         etCPF = view.findViewById(R.id.etCPF);
+        rgSex = view.findViewById(R.id.rgSex);
         rbSexFemale = view.findViewById(R.id.rbSexFemale);
         rbSexMale = view.findViewById(R.id.rbSexMale);
         rbSexOther = view.findViewById(R.id.rbSexOther);
@@ -154,58 +104,115 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
         // attaching data adapter to spinner
         String states[] = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
-        ufAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, states);
+        ufAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, states);
         ufAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spnUF.setAdapter(ufAdapter);
 
         /// init the presenter with the activity associate to the fragment
         personPresenter = new PersonSaveOrUpdatePresenter(this, view.getContext());
 
-        /// verifying if has a argPerson passed by parameter through other fragment or activity, if exist we will update the fields with the new values
-        if(argPerson != null){
-            etName.setText(argPerson.getName());
-            etCPF.setText(argPerson.getCpf());
-            etCEP.setText(argPerson.getCep());
-            etAddress.setText(argPerson.getAddress());
-            spnUF.setSelection(ufAdapter.getPosition(argPerson.getUf()));
-
-            switch (argPerson.getSex()){
-                case FEMALE:
-                    rbSexFemale.setChecked(true);
-                    break;
-                case MALE:
-                    rbSexMale.setChecked(true);
-                    break;
-                case OTHER:
-                    rbSexOther.setChecked(true);
-                    break;
-            }
+        /// if exist arguments than we will update the argPerson because we will edit the Person Object
+        if (getArguments() != null) {
+            personPresenter.setPerson((Person) getArguments().getSerializable("person"));
+        }else{
+            personPresenter.setPerson(new Person());
         }
+
+        /// configuring the event of the fields to update the values in the presenter object
+        etName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                personPresenter.setName(editable.toString());
+            }
+        });
+
+        etAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                personPresenter.setAddress(editable.toString());
+            }
+        });
+
+        etCEP.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                personPresenter.setCEP(editable.toString());
+            }
+        });
+
+        etCPF.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                personPresenter.setCPF(editable.toString());
+            }
+        });
+
+        rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radioButton = rgSex.findViewById(checkedId);
+                int index = rgSex.indexOfChild(radioButton);
+                personPresenter.setSex(index);
+            }
+        });
+
+        spnUF.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                personPresenter.setUF(spnUF.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         ///When we clicked in the cancel button we will finish the current Activy, and we will be back to the main activity
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(personPresenter != null) {
-
-                    /// getting the values from UI
-                    argPerson.setName(etName.getText().toString());
-                    argPerson.setAddress(etAddress.getText().toString());
-                    argPerson.setUf(spnUF.getSelectedItem().toString());
-                    argPerson.setCep(etCEP.getText().toString());
-                    argPerson.setCpf(etCPF.getText().toString());
-
-                    if(rbSexFemale.isChecked()){
-                        argPerson.setSex(Person.SEX.FEMALE);
-                    }else if(rbSexMale.isChecked()){
-                        argPerson.setSex(Person.SEX.MALE);
-                    }else if(rbSexOther.isChecked()){
-                        argPerson.setSex(Person.SEX.OTHER);
-                    }
-
-                    /// saving the person data
-                    personPresenter.save(argPerson);
-                }
+                personPresenter.save();
             }
         });
 
@@ -213,9 +220,7 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(personPresenter != null){
-                    personPresenter.cancel();
-                }
+                personPresenter.cancel();
             }
         });
 
@@ -262,21 +267,41 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         /// @todo implements
     }
 
+    /***/
+    @Override
+    public void updateFields(Person p){
+        if (p != null) {
+            etName.setText(p.getName());
+            etCPF.setText(p.getCpf());
+            etCEP.setText(p.getCep());
+            etAddress.setText(p.getAddress());
+            spnUF.setSelection(ufAdapter.getPosition(p.getUf()));
+
+            switch (p.getSex()) {
+                case FEMALE:
+                    rbSexFemale.setChecked(true);
+                    break;
+                case MALE:
+                    rbSexMale.setChecked(true);
+                    break;
+                case OTHER:
+                    rbSexOther.setChecked(true);
+                    break;
+            }
+        }
+    }
+
     /**
      * Function used to clear the fields values and the argPerson used to save or update the record in the value
      * */
     @Override
     public void clearFields(){
-        argPerson.clearValues();
-
         etName.setText("");
         etCPF.setText("");
         etCEP.setText("");
         etAddress.setText("");
         spnUF.setSelection(0);
         rbSexOther.setChecked(true);
-        rbSexOther.setChecked(false);
-        rbSexOther.setChecked(false);
 
         etName.requestFocus();
     }

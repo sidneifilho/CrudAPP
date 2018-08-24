@@ -3,7 +3,7 @@ package com.sidnei.crudapp.model;
 import java.io.Serializable;
 import java.util.InputMismatchException;
 
-public class Person {
+public class Person implements Serializable{
 
     public enum SEX{ FEMALE, MALE, OTHER}
 

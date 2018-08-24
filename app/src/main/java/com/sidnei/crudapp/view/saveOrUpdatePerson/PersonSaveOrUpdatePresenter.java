@@ -1,23 +1,21 @@
-package com.sidnei.crudapp.presenters;
+package com.sidnei.crudapp.view.saveOrUpdatePerson;
 
 import android.content.Context;
 
 import com.sidnei.crudapp.model.Person;
+import com.sidnei.crudapp.repository.IPersonRepository;
 import com.sidnei.crudapp.repository.PersonRepository;
-import com.sidnei.crudapp.view.activitys.IPersonSaveOrUpdateView;
-import com.sidnei.crudapp.view.activitys.PersonSaveOrUpdateActivity;
-import com.sidnei.crudapp.view.fragments.PersonSaveOrUpdateFragment;
-
-import java.io.Serializable;
 
 public class PersonSaveOrUpdatePresenter {
 
-    private PersonRepository repository;
+    private IPersonRepository repository;
     private IPersonSaveOrUpdateView view;
+    private Person p;
 
     public PersonSaveOrUpdatePresenter(IPersonSaveOrUpdateView view, Context cx){
         this.view = view;
         repository = new PersonRepository(cx);
+        p = new Person();
     }
 
     public void onDestroy(){
@@ -26,12 +24,25 @@ public class PersonSaveOrUpdatePresenter {
     }
 
     public void cancel(){
+        p = new Person();
+
         if(view != null){
             view.clearFields();
         }
     }
 
-    public void save(Person p){
+    public void setPerson(Person p){
+        this.p = p;
+        if(view != null){
+            view.updateFields(p);
+        }
+    }
+
+    public Person getPerson(){
+        return p;
+    }
+
+    public void save(){
         /// ***** verifying if the person data is valid *************
 
         /// person's name cannot be a empty value
@@ -62,5 +73,39 @@ public class PersonSaveOrUpdatePresenter {
                 view.showSaveFail();
             }
         }
+    }
+
+    public void setSex(int index){
+        switch (index){
+            case 0:
+                this.p.setSex(Person.SEX.MALE);
+                break;
+            case 1:
+                this.p.setSex(Person.SEX.FEMALE);
+                break;
+            case 2:
+                this.p.setSex(Person.SEX.OTHER);
+                break;
+        }
+    }
+
+    public void setUF(String uf){
+        this.p.setUf(uf);
+    }
+
+    public void setName(String name){
+        this.p.setName(name);
+    }
+
+    public void setCPF(String cpf){
+        this.p.setCpf(cpf);
+    }
+
+    public void setCEP(String cep){
+        this.p.setCep(cep);
+    }
+
+    public void setAddress(String address){
+        this.p.setAddress(address);
     }
 }

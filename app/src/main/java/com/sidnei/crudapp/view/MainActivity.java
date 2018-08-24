@@ -1,4 +1,4 @@
-package com.sidnei.crudapp.view.activitys;
+package com.sidnei.crudapp.view;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.sidnei.crudapp.R;
+import com.sidnei.crudapp.model.Person;
+import com.sidnei.crudapp.view.saveOrUpdatePerson.PersonSaveOrUpdateActivity;
+import com.sidnei.crudapp.view.searchPerson.PersonSearchActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view){
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), PersonSaveOrUpdateActivity.class);
-            intent.putExtra("idPerson", 0);
+            intent.putExtra("person", new Person());
             startActivity(intent);
             }
         });

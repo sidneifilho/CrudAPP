@@ -1,12 +1,12 @@
-package com.sidnei.crudapp.view.activitys;
+package com.sidnei.crudapp.view.saveOrUpdatePerson;
 
-import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.sidnei.crudapp.R;
-import com.sidnei.crudapp.view.fragments.PersonSaveOrUpdateFragment;
+import com.sidnei.crudapp.model.Person;
 
 public class PersonSaveOrUpdateActivity extends AppCompatActivity implements PersonSaveOrUpdateFragment.OnFragmentInteractionListener {
 
@@ -19,9 +19,18 @@ public class PersonSaveOrUpdateActivity extends AppCompatActivity implements Per
         setContentView(R.layout.activity_person_save_or_update);
 
         if(savedInstanceState == null){
+
+            /// verifying if we will needed edit a person data
+            Intent intent = getIntent();
+            if(intent.hasExtra("person")){
+                Person p = (Person) intent.getSerializableExtra("person");
+                personSaveOrUpdateFragment = PersonSaveOrUpdateFragment.newInstance(p);
+            }else{
+                personSaveOrUpdateFragment = PersonSaveOrUpdateFragment.newInstance(new Person());
+            }
+
             // The Activity is NOT being re-created so we can instantiate a new Fragment
             // and add it to the Activity
-            personSaveOrUpdateFragment = new PersonSaveOrUpdateFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, personSaveOrUpdateFragment, TAG_PERSONSAVEUPDATE_FRAGMENT).commit();
         }else{
             // The Activity IS being re-created so we don't need to instantiate the Fragment or add it,
@@ -44,6 +53,6 @@ public class PersonSaveOrUpdateActivity extends AppCompatActivity implements Per
 
     @Override
     public void onFragmentInteraction(String str){
-        Log.d("MainActivity", str);
+        Log.d("PersonSaveOrUpdateActivity", str);
     }
 }

@@ -1,5 +1,7 @@
 package com.sidnei.crudapp.model;
 
+import java.io.Serializable;
+
 public class Person {
 
     public enum SEX{ FEMALE, MALE, OTHER}
@@ -13,7 +15,7 @@ public class Person {
     private SEX sex;
 
     public Person(){
-        sex = SEX.OTHER;
+        clearValues();
     }
 
     public Person(String name, String cpf, String cep, String uf, String address, SEX sex){
@@ -91,5 +93,42 @@ public class Person {
 
     public void setSex(SEX sex) {
         this.sex = sex;
+    }
+
+    public void setSex(String sex){
+        switch (sex){
+            case "f":
+                this.sex = SEX.FEMALE;
+                break;
+            case "m":
+                this.sex = SEX.MALE;
+                break;
+            case "o":
+                this.sex = SEX.OTHER;
+                break;
+            default:
+                this.sex = SEX.OTHER;
+                break;
+        }
+    }
+
+    public void clearValues(){
+        id = 0;
+        name = "";
+        cpf = "";
+        cep = "";
+        uf = "";
+        address = "";
+        sex = SEX.OTHER;
+    }
+
+    @Override
+    public String toString(){
+        /// @todo implements
+        return "";
+    }
+
+    public void parseFromString(String personStr){
+        /// @todo implements
     }
 }

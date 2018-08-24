@@ -23,6 +23,14 @@ public class PersonDAO implements IDAO<Person> {
         dbGateway = DBSqliteGateway.getInstance(cx);
     }
 
+    public void openDB(){
+        dbGateway.open();
+    }
+
+    public void closeDB(){
+        dbGateway.close();
+    }
+
     public boolean saveOrUpdate(Person p){
 
         SQLiteDatabase db = dbGateway.getDatabase();

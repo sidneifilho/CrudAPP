@@ -88,6 +88,10 @@ public class PersonDAO implements IDAO<Person> {
             db.endTransaction();
         }
 
+        if(rowsSavedOrUpdated > 0) {
+            Log.d("PersonDAO saveOrUpdate", "Pessoa cadastrada, name: " + p.getName() + ", id: " + p.getId());
+        }
+
         return rowsSavedOrUpdated > 0;
     }
 

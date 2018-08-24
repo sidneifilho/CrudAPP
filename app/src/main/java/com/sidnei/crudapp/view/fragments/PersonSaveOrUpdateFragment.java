@@ -13,7 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.sidnei.crudapp.R;
 import com.sidnei.crudapp.model.Person;
@@ -57,8 +59,9 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
 
     private OnFragmentInteractionListener mListener;
 
-    private PersonSaveOrUpdatePresenter personPresenter;
     private ArrayAdapter<String> ufAdapter;
+
+    private PersonSaveOrUpdatePresenter personPresenter;
 
     public PersonSaveOrUpdateFragment() {
         argPerson = new Person();
@@ -80,10 +83,15 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         PersonSaveOrUpdateFragment fragment = new PersonSaveOrUpdateFragment();
 
         try{
+            /// getting the values from arguments
             Bundle args = new Bundle();
             args.putInt(ARG_ID, id);
             args.putString(ARG_NAME, name);
             args.putString(ARG_CPF, cpf);
+            args.putString(ARG_CEP, cep);
+            args.putString(ARG_UF, uf);
+            args.putString(ARG_ADDRESS, address);
+
             switch (sex){
                 case FEMALE:
                     args.putString(ARG_SEX, "f");
@@ -95,9 +103,8 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
                     args.putString(ARG_SEX, "o");
                     break;
             }
-            args.putString(ARG_CEP, cep);
-            args.putString(ARG_UF, uf);
-            args.putString(ARG_ADDRESS, address);
+
+            /// set the args into the fragment
             fragment.setArguments(args);
         }catch (Exception ex){
             Log.d("PersonSaveOrUpdateFragment", "Erro when create a new instance, ERROR: " + ex.getMessage());
@@ -146,7 +153,7 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         spnUF = view.findViewById(R.id.spnUF);
 
         // attaching data adapter to spinner
-        String states[] = {"CE","RS","SC"}; /// @todo insert the other states
+        String states[] = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"};
         ufAdapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, states);
         ufAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spnUF.setAdapter(ufAdapter);
@@ -180,6 +187,23 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
             @Override
             public void onClick(View view) {
                 if(personPresenter != null) {
+
+                    /// getting the values from UI
+                    argPerson.setName(etName.getText().toString());
+                    argPerson.setAddress(etAddress.getText().toString());
+                    argPerson.setUf(spnUF.getSelectedItem().toString());
+                    argPerson.setCep(etCEP.getText().toString());
+                    argPerson.setCpf(etCPF.getText().toString());
+
+                    if(rbSexFemale.isChecked()){
+                        argPerson.setSex(Person.SEX.FEMALE);
+                    }else if(rbSexMale.isChecked()){
+                        argPerson.setSex(Person.SEX.MALE);
+                    }else if(rbSexOther.isChecked()){
+                        argPerson.setSex(Person.SEX.OTHER);
+                    }
+
+                    /// saving the person data
                     personPresenter.save(argPerson);
                 }
             }
@@ -226,11 +250,67 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         super.onDetach();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(String str) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(str);
+    /***/
+    @Override
+    public void showProgress(){
+        /// @todo implements
+    }
+
+    /***/
+    @Override
+    public void hideProgress(){
+        /// @todo implements
+    }
+
+    /**
+     * Function used to clear the fields values and the argPerson used to save or update the record in the value
+     * */
+    @Override
+    public void clearFields(){
+        argPerson.clearValues();
+
+        etName.setText("");
+        etCPF.setText("");
+        etCEP.setText("");
+        etAddress.setText("");
+        spnUF.setSelection(0);
+        rbSexOther.setChecked(true);
+        rbSexOther.setChecked(false);
+        rbSexOther.setChecked(false);
+
+        etName.requestFocus();
+    }
+
+    /***/
+    @Override
+    public void showSaveSuccessful(){
+        try{
+            Toast.makeText(this.getActivity().getApplicationContext(), "Cadastro salvo com sucesso!", Toast.LENGTH_LONG).show();
+        }catch (Exception ex){
+            Log.d("showSave", "ERROR: " + ex.getMessage());
         }
+    }
+
+    /***/
+    @Override
+    public void showSaveFail(){
+        try{
+            Toast.makeText(this.getActivity().getApplicationContext(), "Erro ao tentar cadastrar pessoa.", Toast.LENGTH_LONG).show();
+        }catch (Exception ex){
+            Log.d("showSave", "ERROR: " + ex.getMessage());
+        }
+    }
+
+    /***/
+    @Override
+    public void setNameError(){
+        etName.setError("Nome é inválido!");
+    }
+
+    /***/
+    @Override
+    public void setCpfError(){
+        etCPF.setError("CPF é inválido!");
     }
 
     /**
@@ -247,17 +327,10 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
         void onFragmentInteraction(String str);
     }
 
-    @Override
-    public void clearFields(){
-        argPerson.clearValues();
-
-        etName.setText("");
-        etCPF.setText("");
-        etCEP.setText("");
-        etAddress.setText("");
-        spnUF.setSelection(0);
-        rbSexOther.setChecked(true);
-
-        etName.requestFocus();
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(String str) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(str);
+        }
     }
 }

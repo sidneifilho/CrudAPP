@@ -10,6 +10,8 @@ public interface IPersonSaveOrUpdateView {
 
     void showSaveSuccessful();
 
+    void showSaveFail();
+
     void setNameError();
 
     void setCpfError();

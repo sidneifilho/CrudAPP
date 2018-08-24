@@ -21,6 +21,7 @@ public class PersonSaveOrUpdatePresenter {
     }
 
     public void onDestroy(){
+        repository.close();
         view = null;
     }
 
@@ -31,8 +32,35 @@ public class PersonSaveOrUpdatePresenter {
     }
 
     public void save(Person p){
-        ///@todo imnplement
-    }
+        /// ***** verifying if the person data is valid *************
 
-    /// @todo implement the other functions to operate UI
+        /// person's name cannot be a empty value
+        if(p.getName().equals("")){
+            if(view != null){
+                view.setNameError();
+            }
+            return;
+        }
+
+        /// verifying if the cpf is a valid one
+        if(!p.isValidCpf()){
+            if(view != null){
+                view.setCpfError();
+            }
+            return;
+        }
+        ////*************************************************
+
+        /// saving the person into a repository
+        boolean res = repository.save(p);
+        if(res){
+            if(view != null){
+                view.showSaveSuccessful();
+            }
+        }else{
+            if(view != null){
+                view.showSaveFail();
+            }
+        }
+    }
 }

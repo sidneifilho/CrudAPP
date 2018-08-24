@@ -6,7 +6,7 @@ import com.sidnei.crudapp.dao.PersonDAO;
 
 import java.io.Serializable;
 
-public class PersonRepository implements IRepository, Serializable {
+public class PersonRepository implements IPersonRepository, Serializable {
 
     private PersonDAO personDAO;
 

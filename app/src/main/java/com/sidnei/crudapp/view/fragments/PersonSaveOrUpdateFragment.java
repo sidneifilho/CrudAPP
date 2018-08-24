@@ -109,7 +109,10 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
+
+        // Retain this Fragment so that it will not be destroyed when an orientation
+        // change happens and we can keep our AsyncTask running
+        setRetainInstance(true);
 
         /// if exist arguments than we will update the argPerson because we will edit the Person Object
         if (getArguments() != null) {

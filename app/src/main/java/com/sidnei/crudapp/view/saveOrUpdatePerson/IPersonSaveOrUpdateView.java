@@ -1,5 +1,7 @@
 package com.sidnei.crudapp.view.saveOrUpdatePerson;
 
+import android.content.Context;
+
 import com.sidnei.crudapp.model.Person;
 
 public interface IPersonSaveOrUpdateView {
@@ -19,5 +21,7 @@ public interface IPersonSaveOrUpdateView {
     void setCpfError();
 
     void updateFields(Person p);
+
+    Context getContext();
 
 }

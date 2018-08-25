@@ -253,14 +253,12 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     }
 
     /***/
-    @Override
     public void showProgress(String title, String message){
         hideProgress();
         progressDialog = ProgressDialog.show(getActivity(), title, message, true);
     }
 
     /***/
-    @Override
     public void hideProgress(){
         if(progressDialog != null) {
             progressDialog.hide();
@@ -268,7 +266,6 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     }
 
     /***/
-    @Override
     public void updateFields(Person p){
         if (p != null) {
             etName.setText(p.getName());
@@ -299,7 +296,6 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     /**
      * Function used to clear the fields values and the argPerson used to save or update the record in the value
      * */
-    @Override
     public void clearFields(){
         etName.setText("");
         etCPF.setText("");
@@ -312,35 +308,42 @@ public class PersonSaveOrUpdateFragment extends Fragment implements IPersonSaveO
     }
 
     /***/
-    @Override
     public void showSaveSuccessful(){
         try{
-            Toast.makeText(this.getActivity().getApplicationContext(), "Cadastro salvo com sucesso!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), this.getResources().getString(R.string.record_saved), Toast.LENGTH_LONG).show();
         }catch (Exception ex){
             Log.d("showSave", "ERROR: " + ex.getMessage());
         }
     }
 
     /***/
-    @Override
     public void showSaveFail(){
         try{
-            Toast.makeText(this.getActivity().getApplicationContext(), "Erro ao tentar cadastrar pessoa.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), this.getResources().getString(R.string.error_when_trying_save), Toast.LENGTH_LONG).show();
         }catch (Exception ex){
             Log.d("showSave", "ERROR: " + ex.getMessage());
         }
     }
 
     /***/
-    @Override
     public void setNameError(){
-        etName.setError("Nome é inválido!");
+        etName.setError(this.getResources().getString(R.string.invalid_name));
     }
 
     /***/
-    @Override
     public void setCpfError(){
-        etCPF.setError("CPF é inválido!");
+        etCPF.setError(this.getResources().getString(R.string.invalid_cpf));
+    }
+
+    /***/
+    public Context getContext(){
+        try{
+            return this.getActivity().getApplicationContext();
+        }catch (Exception ex){
+            Log.d("getContext", "Error: " + ex.getMessage());
+        }
+
+        return null;
     }
 
     /**

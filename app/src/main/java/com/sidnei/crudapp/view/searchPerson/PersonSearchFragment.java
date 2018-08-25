@@ -1,8 +1,10 @@
 package com.sidnei.crudapp.view.searchPerson;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -27,10 +29,8 @@ import com.sidnei.crudapp.view.saveOrUpdatePerson.PersonSaveOrUpdateActivity;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link PersonSearchFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PersonSearchFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * {@link PersonSearchFragment.OnFragmentInteractionListener} interface to handle interaction events.
+ * Use the {@link PersonSearchFragment newInstance} factory method to create an instance of this fragment.
  */
 public class PersonSearchFragment extends Fragment implements IPersonSearchView {
 
@@ -104,7 +104,30 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
 
             @Override
             public void onClick(View view){
-                presenter.delete(); /// @todo get the recyclerview item position
+
+                try{
+                    AlertDialog.Builder alertDiag = new AlertDialog.Builder(view.getContext());
+                    alertDiag.setMessage(R.string.are_you_sure);
+                    alertDiag.setCancelable(false);
+
+                    alertDiag.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            presenter.delete();
+                        }
+                    });
+
+                    alertDiag.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+
+                    alertDiag.create().show();
+
+                }catch (Exception ex){
+                    Log.d("showAlertDialog", "Error: " + ex.getMessage());
+                }
             }
         });
 
@@ -194,7 +217,7 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
     /***/
     public void showSearchFail(){
         try{
-            Toast.makeText(this.getActivity().getApplicationContext(), "Erro ao tentar pesquisar registro", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), this.getResources().getString(R.string.error_when_trying_search), Toast.LENGTH_LONG).show();
         }catch (Exception ex){
             Log.d("showSearchFail", "ERROR: " + ex.getMessage());
         }
@@ -202,7 +225,7 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
     /***/
     public void showDeleteOk(){
         try{
-            Toast.makeText(this.getActivity().getApplicationContext(), "Pessoa removida com sucesso!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), this.getResources().getString(R.string.person_deleted_successful), Toast.LENGTH_LONG).show();
         }catch (Exception ex){
             Log.d("showDeleteFail", "ERROR: " + ex.getMessage());
         }
@@ -211,7 +234,7 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
     public void showDeleteFail(){
         try{
 
-            Toast.makeText(this.getActivity().getApplicationContext(), "Erro ao tentar deletar registro", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getActivity().getApplicationContext(), this.getResources().getString(R.string.error_when_trying_delete), Toast.LENGTH_LONG).show();
         }catch (Exception ex){
             Log.d("showDeleteFail", "ERROR: " + ex.getMessage());
         }
@@ -220,6 +243,16 @@ public class PersonSearchFragment extends Fragment implements IPersonSearchView 
     /***/
     public void clearView(){
         etFilter.setText("");
+    }
+
+    public Context getContext(){
+        try{
+            return this.getActivity().getApplicationContext();
+        }catch (Exception ex){
+            Log.d("getContext", "Error: " + ex.getMessage());
+        }
+
+        return null;
     }
 
     @Override

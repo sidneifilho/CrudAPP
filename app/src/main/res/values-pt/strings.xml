@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CrudAPP</string>
     <string name="search">Pesquisar</string>
     <string name="new_record">Novo registro</string>
     <string name="name">Nome</string>
@@ -16,4 +15,20 @@
     <string name="edit">Editar</string>
     <string name="search_results">Resultados da pesquisa</string>
     <string name="all">Todos</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="are_you_sure">Você tem certeza?</string>
+    <string name="searching_persons">Pesquisando registros&#8230;</string>
+    <string name="please_wait_instant">Por favor, aguarde um instante.</string>
+    <string name="removing_record">Removendo registro&#8230;</string>
+    <string name="select_any_record">Selecione algum registro para remover.</string>
+    <string name="error_when_trying_search">Erro ao tentar pesquisar registros</string>
+    <string name="person_deleted_successful">Cadastro removido com sucesso.</string>
+    <string name="invalid_name">Nome é inválido.</string>
+    <string name="invalid_cpf">CPF é inválido.</string>
+    <string name="saving_record">Salvando registro&#8230;</string>
+    <string name="record_deleted_successful">Cadastro removido com sucesso.</string>
+    <string name="error_when_trying_save">Erro ao tentar salvar o registro.</string>
+    <string name="record_saved">Registro salvo com sucesso.</string>
+    <string name="error_when_trying_delete">Erro ao tentar remover registro.</string>
 </resources>

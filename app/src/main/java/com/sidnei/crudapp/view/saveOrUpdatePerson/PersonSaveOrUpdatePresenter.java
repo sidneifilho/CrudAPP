@@ -2,6 +2,7 @@ package com.sidnei.crudapp.view.saveOrUpdatePerson;
 
 import android.content.Context;
 
+import com.sidnei.crudapp.R;
 import com.sidnei.crudapp.model.Person;
 import com.sidnei.crudapp.repository.IPersonRepository;
 import com.sidnei.crudapp.repository.PersonRepository;
@@ -45,7 +46,7 @@ public class PersonSaveOrUpdatePresenter {
     public void save(){
 
         if(view != null){
-            view.showProgress("Salvando dados...", "Por favor, aguarde um instance!");
+            view.showProgress(view.getContext().getResources().getString(R.string.saving_record), view.getContext().getResources().getString(R.string.please_wait_instant));
         }
 
         /// ***** verifying if all person data is valid *************

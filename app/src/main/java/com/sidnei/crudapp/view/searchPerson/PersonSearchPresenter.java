@@ -2,6 +2,7 @@ package com.sidnei.crudapp.view.searchPerson;
 
 import android.content.Context;
 
+import com.sidnei.crudapp.R;
 import com.sidnei.crudapp.model.Person;
 import com.sidnei.crudapp.repository.IPersonRepository;
 import com.sidnei.crudapp.repository.PersonRepository;
@@ -44,37 +45,25 @@ public class PersonSearchPresenter {
     public void search(String filterColumn, String filterValue){
 
         if(view != null){
-            view.showProgress("Pesquisando cadastros...", "Por favor, aguarde um instance!");
+            view.showProgress(view.getContext().getResources().getString(R.string.searching_persons), view.getContext().getResources().getString(R.string.please_wait_instant));
         }
 
-        ArrayList<Person> searchList = new ArrayList<>();
+        ArrayList<Person> searchList;
 
         /// verifying which column was selected and which whereClause we have to put to search the right elements
-        if(filterColumn.equalsIgnoreCase("Nome")){
+        if(filterColumn.equalsIgnoreCase("Nome") || filterColumn.equalsIgnoreCase("Name")){
 
-            if(!filterValue.equalsIgnoreCase("")){
-                searchList = personRep.selectAll("Name like '%" + filterValue + "%'");
-            }else{
-                searchList = new ArrayList<>();
-            }
+            searchList = personRep.selectAll("Name like '%" + filterValue + "%'");
 
         }else if(filterColumn.equalsIgnoreCase("CPF")){
 
-            if(!filterValue.equalsIgnoreCase("")){
-                searchList = personRep.selectAll("CPF='" + filterValue + "'");
-            }else{
-                searchList = new ArrayList<>();
-            }
+            searchList = personRep.selectAll("CPF='" + filterValue + "'");
 
         }else if(filterColumn.equalsIgnoreCase("CEP")){
 
-            if(!filterValue.equalsIgnoreCase("")){
-                searchList = personRep.selectAll("CEP='" + filterValue + "'");
-            }else{
-                searchList = new ArrayList<>();
-            }
+            searchList = personRep.selectAll("CEP='" + filterValue + "'");
 
-        }else if(filterColumn.equalsIgnoreCase("TODOS")){
+        }else {
             searchList = personRep.selectAll("");
         }
 
@@ -96,33 +85,35 @@ public class PersonSearchPresenter {
     /***/
     public void delete(){
 
-        if(view != null){
-            view.showProgress("Removendo cadastro...", "Por favor, aguarde um instance!");
-        }
-
-        /// verifying i there is a selected person valid in the adapter list
+        /// verifying if there is a selected person valid in the adapter list
         Person p = personRecyclerAdapter.getSelectedPerson();
-        if(p == null){
+        if(p != null){
+
+            /// showing message that the operation was started
             if(view != null){
-                view.showMessage("Selecione algum registro para remover!");
+                view.showProgress(view.getContext().getResources().getString(R.string.removing_record), view.getContext().getResources().getString(R.string.please_wait_instant));
             }
-            return;
-        }
 
-        ///delete the person from repository
-        boolean res = personRep.delete(p);
+            ///delete the person from repository
+            boolean res = personRep.delete(p);
 
-        /// if was succeed than we will remove the person from the adapter
-        if(res){
-            personRecyclerAdapter.removePerson(p);
-        }
-
-        /// showing message to the UI indicating if the process was succeed or not
-        if(view != null){
+            /// if was succeed than we will remove the person from the adapter
             if(res){
-                view.showDeleteOk();
+                personRecyclerAdapter.removePerson(p);
+
+                if(view != null){
+                    view.showDeleteOk();
+                }
             }else{
-                view.showDeleteFail();
+                if(view != null){
+                    view.showDeleteFail();
+                }
+            }
+
+
+        }else{
+            if(view != null){
+                view.showMessage(view.getContext().getResources().getString(R.string.select_any_record));
             }
         }
 

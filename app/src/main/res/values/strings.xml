@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CrudAPP</string>
+    <string name="app_name" translatable="false">CrudAPP</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
@@ -21,12 +21,26 @@
     <string name="edit">Edit</string>
     <string name="search_results">Search Results</string>
     <string name="all">All</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="searching_persons">Searching records&#8230;</string>
+    <string name="please_wait_instant">Please, wait a instant.</string>
+    <string name="removing_record">Removing record&#8230;</string>
+    <string name="select_any_record">Select any record to delete.</string>
+    <string name="error_when_trying_search">Error when trying to search.</string>
+    <string name="record_deleted_successful">Record deleted successfully.</string>
+    <string name="error_when_trying_delete">Error when trying to delete.</string>
+    <string name="record_saved">Record saved successfully.</string>
+    <string name="error_when_trying_save">Error when trying to save the record.</string>
+    <string name="invalid_name">Invalid Name.</string>
+    <string name="invalid_cpf">Invalid CPF.</string>
+    <string name="saving_record">Saving record&#8230;</string>
 
     <string-array name="person_filter_columns">
         <item>@string/name</item>
         <item>@string/cpf</item>
         <item>@string/cep</item>
-        <item>@string/all</item>
     </string-array>
 
     <string-array name="brazilian_states_names">
@@ -58,5 +72,6 @@
         <item>"SE"</item>
         <item>"TO"</item>
     </string-array>
+    <string name="person_deleted_successful">Record deleted successfully.</string>
 
 </resources>
